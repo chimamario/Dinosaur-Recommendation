@@ -9,7 +9,6 @@ df['lived_in'].fillna('Other', inplace = True)
 #check if string has 'insert period' as part of the string
 
 #shortening period section in dataset
-
 modified_unique_periods = []
 
 for period in df["period"]:
@@ -58,13 +57,48 @@ df['continent'] = df['lived_in'].map(country_to_continent)
 #filled continent column that has missing values
 df['continent'].fillna('Other', inplace = True)
 
+# unique_counts = {}
+# for column in df.columns:
+#     unique_counts[column] = df[column].value_counts()
+
+# for col, counts in unique_counts.items():
+#     print(f"Counts for column {col}:\n{counts}\n")
 
 
-unique_counts = {}
-for column in df.columns:
-    unique_counts[column] = df[column].value_counts()
+#This section gets the unique values of diets, continents, period,
+###created lists of unique values for each column listed above
+###created dictionary to hold unique value for each column listed above
 
-for col, counts in unique_counts.items():
-    print(f"Counts for column {col}:\n{counts}\n")
+columns_for_iteration = ['diet', 'period', 'continent', 'type'] 
+
+list_of_diets = df['diet'].unique().tolist()
+list_of_period = df['period'].unique().tolist()
+list_of_continent = df['continent'].unique().tolist()
+list_of_types = df['type'].unique().tolist()
+
+list_of_unique_lists = [list_of_diets,list_of_period, list_of_continent, list_of_types]
+
+dict_of_diet = {}
+dict_of_period = {}
+dict_of_continent = {}
+dict_of_type = {}
+
+list_of_unique_dicts = [dict_of_diet, dict_of_period, dict_of_continent, dict_of_type]
+
+for idx in range(0,len(list_of_unique_lists)):
+    for value in list_of_unique_lists[idx]:
+        value_value = df[df[columns_for_iteration[idx]] == value]
+        list_of_unique_dicts[idx][value] = value_value['name'].to_list()
+
+print(dict_of_continent)
+
+
+
+
+
+
+
+    
+
 
 
