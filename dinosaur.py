@@ -87,10 +87,12 @@ for idx in range(0,len(list_of_unique_lists)):
 diet_numbers = list(range(0,len(dict_of_diet)))
 period_numbers = list(range(0,len(dict_of_period)))
 continent_numbers = list(range(0,len(dict_of_continent)))
+type_numbers = list(range(0,len(dict_of_type)))
 
 diet_reference = dict(zip(dict_of_diet.keys(), diet_numbers)) #we either have to do this manually or find a way to make this auto
 period_reference = dict(zip(dict_of_period.keys(), period_numbers))
 continent_reference = dict(zip(dict_of_continent.keys(), continent_numbers))
+type_reference = dict(zip(dict_of_type.keys(), type_numbers))
 
 
 #creating Dino tree structure 
@@ -149,25 +151,34 @@ for diet_node in diet_node_list:  #access period nodes
                     if name in dict_of_diet[node.character_list[2]] and name in dict_of_period[node.character_list[1]]:
                         node.add_dino(name)
                 # print(f"this is the period (parent) node characteristic: {period_node.characteristics}")
-                print(f" list is for {node.characteristics} with {node.parent_dino.characteristics} parent node. these are the dino names {node.get_dinos_names()}")
+                # print(f" list is for {node.characteristics} with {node.parent_dino.characteristics} parent node. these are the dino names {node.get_dinos_names()}")
     
 ## FOURTH TREE LEVEL
+diet_node_list = first_dino.get_dino_nodes()
+
+for diet_node in diet_node_list:  #access period nodes
+    period_nodes = diet_node.get_dino_nodes() 
+    for period_node in period_nodes:
+        continent_nodes = period_node.get_dino_nodes()
+        for continent_node in continent_nodes:
+            if continent_node.dinos != []:
+                for type, names in dict_of_type.items():
+                    continent_node.add_nodes(type, type_reference[type], 4)
+        for continent_node in continent_nodes:
+            if continent_node.dinos != []:
+                type_nodes = continent_node.get_dino_nodes()
+                for node in type_nodes:
+                    node.assign_dino_parent(continent_node)
+                    node.add_to_character_list()
+                
+                for node in type_nodes:
+                    for name in dict_of_type[node.characteristics]:
+                        if name in dict_of_diet[node.character_list[3]] and name in dict_of_period[node.character_list[2]] and name in dict_of_continent[node.character_list[1]]:
+                            node.add_dino(name)
+                    if node.dinos != []:
+                        print(f" list is for {node.characteristics} with {node.parent_dino.characteristics} parent node. these are the dino names {node.get_dinos_names()}")
 
 
-
-
-
-
-
-
-node_2 = diet_node_list[0]
-node_2_list = node_2.get_dino_nodes()
-
-
-# print(first_dino.connecting_nodes)
-# print(diet_reference)
-print(diet_node_list)
-print(node_2_list)
 
 
 
