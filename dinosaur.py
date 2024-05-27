@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from dino_tree import DinoTree
 
 df = pd.read_csv(r"/Users/mariochima/Desktop/my first folder/coding folder/recommendation project/jurassic_park_data.csv")
 
@@ -90,7 +91,35 @@ for idx in range(0,len(list_of_unique_lists)):
         value_value = df[df[columns_for_iteration[idx]] == value]
         list_of_unique_dicts[idx][value] = value_value['name'].to_list()
 
-print(dict_of_continent)
+# print(dict_of_diet)
+
+#creating idx reference for different values
+
+numbers = list(range(0,len(dict_of_diet)))
+
+diet_reference = dict(zip(dict_of_diet.keys(), numbers))
+
+
+
+
+#creating Dino tree structure
+
+first_dino = DinoTree(None, 1)
+for diet, names in dict_of_diet.items():
+    first_dino.add_nodes(diet,diet_reference[diet],1)
+
+for node in first_dino.connecting_nodes.values(): #this line is going thorugh every child node
+    for name in dict_of_diet[node.characteristics]: #this line uses the characteristic of node to filter out dictionary
+        node.add_dino(name)
+        
+
+for node in first_dino.connecting_nodes.values():
+    print(node.dinos)
+
+print(first_dino.connecting_nodes)
+print(diet_reference)
+
+
 
 
 
