@@ -95,29 +95,68 @@ for idx in range(0,len(list_of_unique_lists)):
 
 #creating idx reference for different values
 
-numbers = list(range(0,len(dict_of_diet)))
+diet_numbers = list(range(0,len(dict_of_diet)))
+period_numbers = list(range(0,len(dict_of_period)))
 
-diet_reference = dict(zip(dict_of_diet.keys(), numbers))
+diet_reference = dict(zip(dict_of_diet.keys(), diet_numbers)) #we either have to do this manually or find a way to make this auto
+period_reference = dict(zip(dict_of_period.keys(), period_numbers))
 
 
 
 
-#creating Dino tree structure
 
+#creating Dino tree structure (diet level comeplete. find a way to automate this so that we don't have to create every single scnario)
+
+##ZERO TREE LEVEL
 first_dino = DinoTree(None, 1)
+
+##FIRST TREE LEVEL
 for diet, names in dict_of_diet.items():
     first_dino.add_nodes(diet,diet_reference[diet],1)
 
 for node in first_dino.connecting_nodes.values(): #this line is going thorugh every child node
-    for name in dict_of_diet[node.characteristics]: #this line uses the characteristic of node to filter out dictionary
+    for name in dict_of_diet[node.characteristics]: #this line uses the characteristic of node to filter out dictionary to add respective dinos
         node.add_dino(name)
-        
-
+##ENDING FIRST TREE/ SECOND TREE LEVEL
 for node in first_dino.connecting_nodes.values():
-    print(node.dinos)
+    node.assign_dino_parent(first_dino)
+    node.add_to_character_list()
+    #add assign dino parent and character list transverse
+    for period, names in dict_of_period.items(): #created period children nodes
+        node.add_nodes(period,period_reference[period],2)
 
-print(first_dino.connecting_nodes)
-print(diet_reference)
+for diet_node in first_dino.connecting_nodes.values(): #iterating through period nodes to add respective dinosaurs
+    period_nodes = diet_node.get_dino_nodes()
+
+    for node in period_nodes: #assigning dino parents and adding to charcter_list first
+        node.assign_dino_parent(diet_node)
+        node.add_to_character_list()
+    
+    for node in period_nodes: #now add dino names based off character list
+        for name in dict_of_period[node.characteristics]:
+            if name in dict_of_diet[node.character_list[1]]: #note that the parent node character idx is AFTER THE CHILD
+                node.add_dino(name)
+        print(f" list is for {node}. these are the dino names {node.get_dinos_names()}")
+
+##THIRD TREE LEVEL
+
+
+
+
+
+
+
+
+
+node_list = first_dino.get_dino_nodes()
+node_2 = node_list[0]
+node_2_list = node_2.get_dino_nodes()
+
+
+# print(first_dino.connecting_nodes)
+# print(diet_reference)
+print(node_list)
+print(node_2_list)
 
 
 
