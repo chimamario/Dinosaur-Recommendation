@@ -42,6 +42,12 @@ class DinoTree:
     def assign_dino_parent(self, parent_node):
         if self.parent_dino == None:
             self.parent_dino = parent_node
+    
+    def get_child_based_on_option(self,option):
+        child_node = self.connecting_nodes[option]
+        return child_node
+
+
         
     
     #add method that checks the parent of the child so that if it is one, it will add its characteristics only its own list
