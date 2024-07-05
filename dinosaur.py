@@ -181,25 +181,26 @@ for diet_node in diet_node_list:  #access period nodes
 
 ##TRAVERSE THROUGH TREE WITH USER
 
-def welcome (): #initial set-up of user interface
+def welcome(): #initial set-up of user interface
     print("\nHello! Welcome to the Dinosaur Recommender!\nWe're going to pick out a dinosaur based on a few factors\nWould you like to pick a dino?")
     t_or_f = False
-    while t_or_f == False:
-        ans = input("Y for yes, N for no: ")
-        ans = ans.upper()
-        if ans == 'Y':
-            dino_tree_setup()
-            t_or_f == True
-        if ans == "N":
-            print("\nI'm sorry you don't want to pick YOUR OWN DINO :(\nHave a nice day!")
-            break
-        else:
-            print("invalid input. Try again!")
+    ans = input("Y for yes, N for no: ")
+    ans = ans.upper()
+    if ans == 'Y':
+        dino_tree_setup()
+        t_or_f == True
+    if ans == "N":
+        print("\nI'm sorry you don't want to pick YOUR OWN DINO :(\nHave a nice day!")
+        exit
+    elif ans not in ['Y','N']:
+        print("invalid input. Try again!")
+        welcome()
+            
     return
             
     
 def dino_tree_setup(): #has set of questions and dictionary references that will be used to traverse tree. It also explains to user how this will work
-    print("""\nWe'll ask you four questions based on Diet, Time Period, Continent, and the Type of Dinosaur.\nIt should be noted that there many not be a dinosaur based off the answers given.\nIf that is the case, we'll let you know and give you the chance to answer again.
+    print("""\nWe'll ask you four questions based on Diet, Time Period, Continent, and the Type of Dinosaur.\nIt should be noted that there may not be a dinosaur based off the answers given.\nIf that is the case, we'll let you know and give you the chance to answer again.
           """)
 
     diet_question = "\nWhat type of diet does your dinosaur have?\nPick from the following options:"
@@ -217,13 +218,11 @@ def dino_tree_setup(): #has set of questions and dictionary references that will
         dino_tree_traverse(dino_node, questions_list, dict_reference_list)
 
 
-
-
-
 def dino_tree_traverse(node, questions_list, dict_reference_list): #where the main work is held
-    while len(questions_list) != 0:
+    odd_false = False
+    while len(questions_list) != 0 or odd_false == True:
 
-        print(questions_list[0])
+        print(questions_list[0]) #displays first set of questions and options. If dinosaur is not picked then the function is repeated and the question is popped off the list
         for option, num in dict_reference_list[0].items():
             print(f"{num}: {option}")
         ans = input("")
@@ -235,19 +234,20 @@ def dino_tree_traverse(node, questions_list, dict_reference_list): #where the ma
                 print("\nSorry, there are no dinosaurs with this set of characteristics. Answer again")
                 dino_tree_traverse(node, questions_list, dict_reference_list)
             elif len(new_node.dinos) == 1:
-                print(f"This set of characteristics only have one dinosaur. It is the {new_node.dinos[0]}")
+                print(f"This set of characteristics only has one dinosaur. It is the {new_node.dinos[0]}")
                 odd_false = False
                 while odd_false == False:
-                    odd_ans = input("Is this the dinosaur you want? Y or N")
+                    odd_ans = input("Is this the dinosaur you want? Y or N: ")
                     odd_ans = odd_ans.upper()
                     if odd_ans == "Y":
-                        print(f"Congratulations on picking {new_node.dinos[0]}!! We hope your happy with your dinosaur!")
-                        return
-                    if odd_ans == "N":
+                        print(f"Congratulations on picking {new_node.dinos[0]}!! We hope you're happy with your dinosaur!")
+                        odd_false = True
+                        return 
+                    elif odd_ans == "N":
                         print("Fair enough. Pick another answer")
                         dino_tree_traverse(node, questions_list, dict_reference_list)
                         odd_false = True
-                    else:
+                    elif odd_ans != 'N' or odd_ans != 'Y':
                         print("invalid answer. Try again real quick.")
 
 
@@ -255,6 +255,7 @@ def dino_tree_traverse(node, questions_list, dict_reference_list): #where the ma
                 questions_list.pop(0)
                 dict_reference_list.pop(0)
                 dino_tree_traverse(new_node, questions_list, dict_reference_list)
+                return
             
         else:
             print("Incorrect answer. Please try again")
@@ -273,12 +274,14 @@ def dino_tree_traverse(node, questions_list, dict_reference_list): #where the ma
 
     return
     
-
+def end_game():
+    exit
 ##todo - fix up bug at the end
 ## - fix bug when there's only one dino in the dino section
+## - comment on code
 
 
-# welcome()   
+welcome()   
 
 
 

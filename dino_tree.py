@@ -28,8 +28,6 @@ class DinoTree:
         dino_list = list(self.connecting_nodes.values())
         return dino_list
 
-    
-    
     def add_to_character_list(self): #should add all the characteristics even the ones of parents
         self.character_list.append(self.characteristics)
         parent = self.parent_dino
@@ -39,6 +37,7 @@ class DinoTree:
 
     def get_parent_dino(self):
         return self.parent_dino
+    
     def assign_dino_parent(self, parent_node):
         if self.parent_dino == None:
             self.parent_dino = parent_node
@@ -50,7 +49,5 @@ class DinoTree:
 
         
     
-    #add method that checks the parent of the child so that if it is one, it will add its characteristics only its own list
-    #create another method that uses this list above and uses that to filter names
-    #has to be method that checks if there are any dino names in the node. if not, then we have to tell the user and go back to the parent node
+    
     
